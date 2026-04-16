@@ -1,8 +1,7 @@
 
 typedef struct _Endereco Endereco;
 
-struct _Endereco
-{
+struct _Endereco {
     char logradouro[72];
     char bairro[72];
     char cidade[72];
@@ -12,26 +11,19 @@ struct _Endereco
     char lixo[2];
 };
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     FILE *f;
     Endereco e;
     long ini, fim, meio, qtd;
     char cepBuscado[9];
     int cmp;
 
-    if (argc != 3)
-    {
-        printf("Uso: %s <arquivo_ordenado.dat> <CEP>\n", argv[0]);
+    if (argc != 3) {
+        printf("Uso: %s <arquivo_ordenado.dat> <CEP>", argv[0]);
         return 1;
     }
 
     f = fopen(argv[1], "rb");
-    if (f == NULL)
-    {
-        printf("Erro ao abrir arquivo.\n");
-        return 1;
-    }
 
     strncpy(cepBuscado, argv[2], 8);
     cepBuscado[8] = '\0';
@@ -42,8 +34,7 @@ int main(int argc, char *argv[])
     ini = 0;
     fim = qtd - 1;
 
-    while (ini <= fim)
-    {
+    while (ini <= fim) {
         meio = (ini + fim) / 2;
 
         fseek(f, meio * sizeof(Endereco), SEEK_SET);
@@ -51,29 +42,25 @@ int main(int argc, char *argv[])
 
         cmp = strncmp(cepBuscado, e.cep, 8);
 
-        if (cmp == 0)
-        {
-            printf("CEP encontrado!\n");
-            printf("Logradouro: %.72s\n", e.logradouro);
-            printf("Bairro: %.72s\n", e.bairro);
-            printf("Cidade: %.72s\n", e.cidade);
-            printf("UF: %.72s\n", e.uf);
-            printf("Sigla: %.2s\n", e.sigla);
-            printf("CEP: %.8s\n", e.cep);
+        if (cmp == 0) {
+            printf("CEP encontrado");
+            printf("Logradouro: %.72s", e.logradouro);
+            printf("Bairro: %.72s", e.bairro);
+            printf("Cidade: %.72s", e.cidade);
+            printf("UF: %.72s", e.uf);
+            printf("Sigla: %.2s", e.sigla);
+            printf("CEP: %.8s", e.cep);
             fclose(f);
             return 0;
         }
-        else if (cmp < 0)
-        {
+        else if (cmp < 0) {
             fim = meio - 1;
         }
-        else
-        {
+        else {
             ini = meio + 1;
         }
     }
 
-    printf("CEP nao encontrado.\n");
     fclose(f);
     return 0;
 }
